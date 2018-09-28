@@ -11,7 +11,9 @@ def generate(gids):
   draw.text((840,510), gids[0], font=fnt, fill=(0,0,0,255))
   draw.text((840,950), gids[1], font=fnt, fill=(0,0,0,255))
 
-  filename = "res/" + str(uuid.uuid1()) + ".pdf"
+  fileid = str(uuid.uuid1())
+
+  filename = "res/" + fileid + ".pdf"
 
   im.save(filename, "PDF", resolution=100.0)
 

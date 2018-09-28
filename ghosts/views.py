@@ -1,7 +1,7 @@
 from ghosts.database import Spectre, db
 from ghosts.generator import generate
-from flask import Blueprint, render_template, request, flash, redirect, url_for, send_file
-import random
+from flask import Blueprint, render_template, request, flash, redirect, url_for, current_app
+import random, os
 
 views = Blueprint('views', __name__)
 
@@ -15,6 +15,21 @@ def generate_gids(n):
       ids.append(nid)
   
   return tuple(ids)
+
+def download_and_remove(filename):
+  path = os.path.join(os.getcwd(), filename)
+
+
+  def generate():
+    with open(path, 'rb') as f:
+        yield from f
+
+    os.remove(path)
+  
+  r = current_app.response_class(generate(), mimetype='application/pdf')
+  r.headers.set('Content-Disposition', 'attachment', filename='ghosts.pdf')
+
+  return r
 
 @views.route('/')
 def index():
@@ -40,7 +55,7 @@ def cont():
 
   filename = generate(gids)
 
-  return send_file(filename)
+  return download_and_remove(filename)
 
 @views.route('/new')
 def new():
@@ -53,18 +68,19 @@ def new():
   else:
     tree_id = qry.tree_id + 1
   
-  new_spectre = Spectre(gid=generate_gids(1)[0], tree_id=tree_id, is_root=True)
-  db.session.add(new_spectre)
+  new_root = Spectre(gid=generate_gids(1)[0], tree_id=tree_id, is_root=True)
+  db.session.add(new_root)
   db.session.commit()
 
   gids = generate_gids(2)
   
   for gid in gids:
-    new_spectre = Spectre(gid=gid, tree_id=tree_id, parent=new_spectre)
+    new_spectre = Spectre(gid=gid, tree_id=tree_id, parent=new_root)
     db.session.add(new_spectre)
   
   db.session.commit()
 
   filename = generate(gids)
 
-  return send_file(filename)
+  return download_and_remove(filename)
+
