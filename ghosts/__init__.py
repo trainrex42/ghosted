@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, session
 from sqlalchemy_utils import database_exists
 from sqlalchemy.engine.url import make_url
 

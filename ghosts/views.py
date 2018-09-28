@@ -82,6 +82,7 @@ def new():
   db.session.commit()
 
   session["gid"] = new_root.gid
+  flash("Your ghost ID is: %s" % new_root.gid, 'info')
   return redirect(url_for('views.profile'))
 
 @views.route('/dashboard')
