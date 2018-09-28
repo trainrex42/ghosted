@@ -60,7 +60,7 @@ def new():
   gids = generate_gids(2)
   
   for gid in gids:
-    new_spectre = Spectre(gid=gid, tree_id=tree_id, parent=new_spectre.id)
+    new_spectre = Spectre(gid=gid, tree_id=tree_id, parent=new_spectre)
     db.session.add(new_spectre)
   
   db.session.commit()
