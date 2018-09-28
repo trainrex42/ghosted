@@ -9,7 +9,6 @@ def create_app(config='ghosts.config.Config'):
   with app.app_context():
     # Database Setup
     from ghosts.database import db
-    db.init_app(app)
     url = make_url(app.config['SQLALCHEMY_DATABASE_URI'])
     if not database_exists(url):
       db.create_all()

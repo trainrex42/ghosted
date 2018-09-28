@@ -7,9 +7,13 @@
     </p>
     <hr class="my-4">
     <p class="lead">
-      Print the below "Ghosting" sheet and cut out the two notes and ghosts. Now package it up with a fun treat or goodie-bag, leave it on a friends doorstep, ring the bell, and RUN!
+      If you've been ghosted, click the "I've been Ghosted" button. Otherwise, click the "Create a new ghost" button.
     </p>
-    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#continue">I've been Ghosted</button>
+    {% if gid %}
+      <a class="btn btn-warning" href="/dashboard">I've been Ghosted</a>
+    {% else %}
+      <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#continue">I've been Ghosted</button>
+    {% endif %}
     <a class="btn btn-secondary" href="/new">Create a new ghost</a>
 
     <div class="modal fade" id="continue" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

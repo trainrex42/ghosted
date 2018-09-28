@@ -1,0 +1,25 @@
+def old_new()
+  gids = generate_gids(2)
+  
+  for gid in gids:
+    new_spectre = Spectre(gid=gid, tree_id=tree_id, parent=new_root)
+    db.session.add(new_spectre)
+  
+  db.session.commit()
+
+  filename = generate(gids)
+
+  return download_and_remove(filename)
+
+def old_continue()
+  gids = generate_gids(2)
+  
+  for gid in gids:
+    new_spectre = Spectre(gid=gid, tree_id=s.tree_id, parent=s)
+    db.session.add(new_spectre)
+  
+  db.session.commit()
+
+  filename = generate(gids)
+
+  return download_and_remove(filename)
