@@ -7,7 +7,7 @@ class Spectre(db.Model):
 
   id = db.Column(db.Integer, primary_key=True)
   gid = db.Column(db.String(8), unique=True)
-  tree_id = db.Column(db.Integer, unique=True)
+  tree_id = db.Column(db.Integer)
   parent_id = db.Column(db.Integer, db.ForeignKey("spectres.id"))
 
   is_root = db.Column(db.Boolean(), default=False)
