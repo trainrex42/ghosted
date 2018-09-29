@@ -46,11 +46,11 @@
   function draw_network(data) {
     const nodes = new vis.DataSet(data.map(function(x) {
       if (x.id == {{ user.id }}) {
-        return {id: x.id, label: "", color: {background: "orange", border: "black"}};
+        return {id: x.id, color: {border: "black"}, image: "/static/ghost-o.png", shape: "image"};
       } else if (x.active) {
-        return {id: x.id, label: "", color: {background: "green", border: "black"}};
+        return {id: x.id, color: {border: "black"}, image: "/static/ghost-g.png", shape: "image"};
       }
-      return {id: x.id, label: "", color: {background: "grey", border: "black"}};
+      return {id: x.id, color: {border: "black"}, image: "/static/ghost.png", shape: "image"};
     }));
     var e = []
 
@@ -81,6 +81,9 @@
       interaction: {
         dragNodes: false,
         selectable: false
+      },
+      shapeProperties: {
+        useBorderWithImage:true
       }
     };
 
