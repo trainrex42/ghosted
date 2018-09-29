@@ -56,15 +56,15 @@ def cont():
   gid = request.form["gid"].upper()
 
   s = Spectre.query.filter_by(gid=gid).first()
-
-  if not s.active:
-    s.active = True
-    db.session.commit()
   
   if s == None:
     flash("Ghost ID %s not found" % gid, 'danger')
     return redirect(url_for('views.index'))
   else:
+    if not s.active:
+      s.active = True
+      db.session.commit()
+
     session["gid"] = gid
     return redirect(url_for('views.profile'))
 
