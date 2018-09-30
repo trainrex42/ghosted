@@ -8,9 +8,14 @@
   <div class="col-sm-3">
     <div class="card p-1 mt-1">
       <h1>{{ user.gid }}</h1>
-      <a class="btn btn-warning" href="/generate">Print Ghosts</a>
+      <button type="button" class="btn btn-warning" onclick="download()">Print Ghosts</button>
       <button type="button", class="btn btn-primary mt-1" data-toggle="modal" data-target="#rules">Rules</button>
       <a class="btn btn-primary mt-1" href="/">Home</a>
+    </div>
+    <div class="card p-1 mt-1">
+      <h3>Network Key</h3>
+      Orange - You<br/>
+      Green - Active
     </div>
   </div>
   <div class="col-sm-9">
@@ -42,21 +47,23 @@
   </div>
 </div>
 
+<iframe id="filedownload" style="display:none;"></iframe>
+
 <script type="text/javascript">
   function draw_network(data) {
     const nodes = new vis.DataSet(data.map(function(x) {
       if (x.id == {{ user.id }}) {
-        return {id: x.id, color: {border: "black"}, image: "/static/ghost-o.png", shape: "image"};
+        return {id: x.id, color: {border: "black"}, image: "/static/ghost-o.png", shape: "image", size: (x.children.length*3 + 20)};
       } else if (x.active) {
-        return {id: x.id, color: {border: "black"}, image: "/static/ghost-g.png", shape: "image"};
+        return {id: x.id, color: {border: "black"}, image: "/static/ghost-g.png", shape: "image", size: (x.children.length*3 + 20)};
       }
-      return {id: x.id, color: {border: "black"}, image: "/static/ghost.png", shape: "image"};
+      return {id: x.id, color: {border: "black"}, image: "/static/ghost.png", shape: "image", size: (x.children.length*3 + 20)};
     }));
     var e = []
 
     for (i in data) {
       for (c in data[i].children){
-        e.push({from: data[i].id, to: data[i].children[c]});
+        e.push({from: data[i].id, to: data[i].children[c], arrows:'to'});
       }
     }
 
@@ -68,32 +75,23 @@
       edges: edges
     };
 
-    var options = {
-      layout: {
-        hierarchical: {
-          direction: "UD",
-          sortMethod: "directed"
-        }
-      },
-      physics: {
-        enabled: false
-      },
-      interaction: {
-        dragNodes: false,
-        selectable: false
-      },
-      shapeProperties: {
-        useBorderWithImage:true
-      }
-    };
+    var options = {};
 
     var network = new vis.Network(container, netdata, options);
 
     
   }
 
+  function update() {
+    $.get("/network", draw_network);
+  }
 
-  $.get("/network", draw_network);
+  function download() {
+    document.getElementById('filedownload').src = "/generate";
+    update();
+  }
+
+  update();
 </script>
 
 
