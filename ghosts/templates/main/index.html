@@ -7,14 +7,14 @@
     </p>
     <hr class="my-4">
     <p class="lead">
-      If you've been ghosted, click the "I've been Ghosted" button. Otherwise, click the "Create a new ghost" button.
+      If you've been ghosted, click the "I've been Ghosted" button. Otherwise, click the "Create a new haunt" button.
     </p>
     {% if gid %}
       <a class="btn btn-warning" href="/dashboard">I've been Ghosted</a>
     {% else %}
       <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#continue">I've been Ghosted</button>
     {% endif %}
-    <a class="btn btn-secondary" href="/new">Create a new ghost</a>
+    <a class="btn btn-secondary" href="/new">Create a new haunt</a>
 
     <div class="modal fade" id="continue" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
