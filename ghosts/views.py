@@ -1,4 +1,4 @@
-from ghosts.database import Spectre, db
+from ghosts.database import Spectre, db, Haunt
 from ghosts import generator
 from flask import Blueprint, render_template, request, flash, redirect, url_for, current_app, session, abort, jsonify
 import random, os
@@ -22,7 +22,7 @@ def generate_ghosts(parent_gid):
   gids = generate_gids(2)
   
   for gid in gids:
-    new_spectre = Spectre(gid=gid, tree_id=parent.tree_id, parent=parent)
+    new_spectre = Spectre(gid=gid, haunt=parent.haunt, parent=parent)
     db.session.add(new_spectre)
   
   db.session.commit()
@@ -70,14 +70,11 @@ def cont():
 
 @views.route('/new')
 def new():
-  qry = Spectre.query.filter_by(is_root=True).order_by(Spectre.tree_id.desc()).first()
+  h = Haunt()
+  db.session.add(h)
+  db.session.commit()
 
-  if qry == None:
-    tree_id = 1
-  else:
-    tree_id = qry.tree_id + 1
-  
-  new_root = Spectre(gid=generate_gids(1)[0], tree_id=tree_id, is_root=True, active=True)
+  new_root = Spectre(gid=generate_gids(1)[0], is_root=True, active=True, haunt=h)
   db.session.add(new_root)
   db.session.commit()
 
@@ -107,7 +104,7 @@ def network():
     abort(403)
   else:
     s = Spectre.query.filter_by(gid=session["gid"]).first()
-    n = Spectre.query.filter_by(tree_id=s.tree_id).all()
+    n = Spectre.query.filter_by(haunt=s.haunt).all()
 
     d = [i.as_dict() for i in n]
 
